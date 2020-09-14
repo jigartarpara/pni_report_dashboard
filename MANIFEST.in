@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include pni_report_dashboard *.css
+recursive-include pni_report_dashboard *.csv
+recursive-include pni_report_dashboard *.html
+recursive-include pni_report_dashboard *.ico
+recursive-include pni_report_dashboard *.js
+recursive-include pni_report_dashboard *.json
+recursive-include pni_report_dashboard *.md
+recursive-include pni_report_dashboard *.png
+recursive-include pni_report_dashboard *.py
+recursive-include pni_report_dashboard *.svg
+recursive-include pni_report_dashboard *.txt
+recursive-exclude pni_report_dashboard *.pyc
