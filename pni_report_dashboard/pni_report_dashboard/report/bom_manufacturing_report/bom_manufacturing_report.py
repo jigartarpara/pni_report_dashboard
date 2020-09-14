@@ -16,7 +16,7 @@ def get_data(filters, data):
 
 def get_exploded_items(bom, data, indent=0):
 	exploded_items = frappe.get_all("BOM Item",
-		filters={"parent": bom, "include_item_in_manufacturing": True},
+		filters={"parent": bom, "bom_no": ('<>', '')},
 		fields= ['qty','bom_no','qty','scrap','item_code','item_name','description','uom'])
 
 	for item in exploded_items:
