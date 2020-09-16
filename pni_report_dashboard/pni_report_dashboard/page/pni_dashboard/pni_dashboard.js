@@ -43,7 +43,7 @@ pni.dashboard.paperCup = class paperCup
 				<td bgcolor="#2196f3">LDPE</td>
 				</tr>
 				<tr>
-				<td>value</td>
+				<td id="ldpe">value</td>
 				</tr>
 				<table>
 			</div>
@@ -53,7 +53,7 @@ pni.dashboard.paperCup = class paperCup
 				<td bgcolor="#ffc107">INK</td>
 				</tr>
 				<tr>
-				<td>value</td>
+				<td id="ink">value</td>
 				</tr>
 				<table>
 			</div>
@@ -76,13 +76,17 @@ pni.dashboard.paperCup = class paperCup
 		`)
 
 		$( document ).ready(function() {
-			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_carton')
+			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_carton',{item_group: "paper reel"})
 			.then((result) => {
-				// setTimeout(function(){
-				// 	erpnext.accounts.ReconciliationList.refresh();
-				// }, 2000);
-				// me.dialog.hide();
 				$("#uncoated").html(result);
+			})
+			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_ldpe',{item_group: "paper reel"})
+			.then((result) => {
+				$("#ldpe").html(result);
+			})
+			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_carton',{item_group: "Printing INK"})
+			.then((result) => {
+				$("#ink").html(result);
 			})
 		})
 
