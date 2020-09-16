@@ -80,7 +80,7 @@ pni.dashboard.paperCup = class paperCup
 			.then((result) => {
 				$("#uncoated").html(result);
 			})
-			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_ldpe',{item_group: "paper reel"})
+			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_ldpe')
 			.then((result) => {
 				$("#ldpe").html(result);
 			})
