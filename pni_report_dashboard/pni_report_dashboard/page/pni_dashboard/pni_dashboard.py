@@ -21,7 +21,7 @@ def get_ldpe():
 		select sum(sed.qty)  
 			from `tabStock Entry Detail` as sed, `tabStock Entry` as se
 		where sed.docstatus=1 and sed.item_code="LDP LA 17"
-		and se.posting_date="{0}" and sed.parent = se.name
+		and se.posting_date="{0}" and sed.parent = se.name and se.stock_entry_type = "Manufacture"
 	""".format(_date))
 	data = 0
 	if sql[0] and sql[0][0]:
