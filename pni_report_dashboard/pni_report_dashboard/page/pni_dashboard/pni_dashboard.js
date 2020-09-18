@@ -120,12 +120,12 @@ pni.dashboard.paperCup = class paperCup
 				$("#ink").html(result);
 			})
 
-			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_cup_production',{item_group: "Paper Blank"})
+			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_cup_production',{item_group: "Paper Blank", tw: "FG Blank and Bottom - PNI"})
 			.then((result) => {
 				$("#blank").html(result);
 			})
 
-			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_cup_production',{item_group: "Paper Cup"})
+			frappe.xcall('pni_report_dashboard.pni_report_dashboard.page.pni_dashboard.pni_dashboard.get_cup_production',{item_group: "Paper Cup", tw: "FG Paper Cup - PNI"})
 			.then((result) => {
 				$("#paper").html(result);
 			})

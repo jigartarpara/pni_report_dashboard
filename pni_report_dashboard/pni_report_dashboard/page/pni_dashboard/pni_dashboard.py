@@ -16,13 +16,16 @@ def get_ink(item_group):
 	return data
 
 @frappe.whitelist()
-def get_cup_production(item_group):
+def get_cup_production(item_group, tw = ""):
 	_date = add_days(today(), -1)
+	condition = ""
+	if tw:
+		condition += " and sed.t_warehouse = '{0}'".format(tw)
 	sql  = frappe.db.sql("""
 		select sum(sed.qty)  
 			from `tabStock Entry Detail` as sed, `tabStock Entry` as se
-		where sed.docstatus=1 and sed.item_group="{1}" and se.posting_date="{0}" and sed.parent = se.name and se.stock_entry_type = "Manufacture"
-	""".format(_date, item_group))
+		where sed.docstatus=1 and sed.item_group="{1}" and se.posting_date="{0}" and sed.parent = se.name and se.stock_entry_type = "Manufacture" {2}
+	""".format(_date, item_group, condition))
 	data = 0
 	if sql[0] and sql[0][0]:
 		data = sql[0][0]
