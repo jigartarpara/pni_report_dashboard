@@ -7,12 +7,15 @@
   "brand",
   "total_cup_production",
   "net_weight",
+  "column_break_4",
   "blank_scrap",
   "blank_rate",
   "bottom_scrap",
   "bottom_rate",
+  "section_break_9",
   "f1",
   "f2",
+  "column_break_12",
   "f3",
   "costing"
  ],
@@ -79,10 +82,22 @@
    "fieldname": "costing",
    "fieldtype": "Data",
    "label": "Costing"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
   }
  ],
  "istable": 1,
- "modified": "2020-10-05 15:28:33.157227",
+ "modified": "2020-10-05 16:00:48.161033",
  "modified_by": "Administrator",
  "module": "Pni Report Dashboard",
  "name": "Dail PC Costing",
