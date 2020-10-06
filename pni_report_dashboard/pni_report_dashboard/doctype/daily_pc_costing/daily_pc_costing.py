@@ -61,5 +61,7 @@ class DailyPCCosting(Document):
 		raw.f2 = float(raw.bottom_scrap) * float(raw.bottom_rate)
 
 		# f3 = (f1+f2) / total_cup_production
-		raw.f3 = (float(raw.f1)+float(raw.f2))/ float(raw.total_cup_production)
-		
+		if raw.total_cup_production > 0 :
+			raw.f3 = (float(raw.f1)+float(raw.f2))/ float(raw.total_cup_production)
+		else:
+			raw.f3 = 0
