@@ -41,11 +41,22 @@ class DailyPCCosting(Document):
 			raw.total_cup_production = data[0][0]
 			raw.net_weight = data[0][1]
 		
+		if not raw.net_weight:
+			raw.net_weight = 0
+		if not raw.blank_scrap:
+			raw.blank_scrap = 0
+		if not raw.blank_rate:
+			raw.blank_rate = 0
+		if not raw.bottom_scrap:
+			raw.bottom_scrap = 0
+		if not raw.bottom_rate:
+			raw.bottom_rate  = 0
+		
 		# f1 = (net weight + blank Scarp) * blank rate
-		raw.f1 = ( float(raw.net_weight if raw.net_weight else 0) + float(raw.blank_scrap if raw.blank_scrap else 0) ) * float(raw.blank_rate if raw.blank_rate else 0)
+		raw.f1 = ( float(raw.net_weight) + float(raw.blank_scrap) ) * float(raw.blank_rate)
 
 		# f2 = bottom scrap * bottom rate
-		raw.f2 = float(raw.bottom_scrap if raw.bottom_scrap else 0) * float(raw.bottom_rate if raw.bottom_rate else 0)
+		raw.f2 = float(raw.bottom_scrap) * float(raw.bottom_rate)
 
 		# f3 = (f1+f2) / total_cup_production
 		raw.f3 = (float(raw.f1)+float(raw.f2))/ float(raw.total_cup_production)
