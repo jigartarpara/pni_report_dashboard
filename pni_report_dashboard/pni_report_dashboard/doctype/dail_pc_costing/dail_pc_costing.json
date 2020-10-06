@@ -64,21 +64,6 @@
    "label": "Bottom Rate"
   },
   {
-   "fieldname": "f1",
-   "fieldtype": "Data",
-   "label": "F1"
-  },
-  {
-   "fieldname": "f2",
-   "fieldtype": "Data",
-   "label": "F2"
-  },
-  {
-   "fieldname": "f3",
-   "fieldtype": "Data",
-   "label": "F3"
-  },
-  {
    "fieldname": "costing",
    "fieldtype": "Data",
    "label": "Costing"
@@ -94,10 +79,28 @@
   {
    "fieldname": "column_break_12",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "f1",
+   "fieldtype": "Float",
+   "label": "F1"
+  },
+  {
+   "default": "0",
+   "fieldname": "f2",
+   "fieldtype": "Float",
+   "label": "F2"
+  },
+  {
+   "default": "0",
+   "fieldname": "f3",
+   "fieldtype": "Float",
+   "label": "F3"
   }
  ],
  "istable": 1,
- "modified": "2020-10-05 16:00:48.161033",
+ "modified": "2020-10-05 19:11:30.054337",
  "modified_by": "Administrator",
  "module": "Pni Report Dashboard",
  "name": "Dail PC Costing",
