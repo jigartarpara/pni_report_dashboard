@@ -51,6 +51,8 @@ class DailyPCCosting(Document):
 			raw.bottom_scrap = 0
 		if not raw.bottom_rate:
 			raw.bottom_rate  = 0
+		if not raw.total_cup_production:
+			raw.total_cup_production = 0
 		
 		# f1 = (net weight + blank Scarp) * blank rate
 		raw.f1 = ( float(raw.net_weight) + float(raw.blank_scrap) ) * float(raw.blank_rate)
