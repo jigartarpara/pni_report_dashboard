@@ -29,7 +29,7 @@ def get_exploded_items(bom, qty_to_produce, data, indent=0):
 		data.append({
 			'item_code': item.item_code,
 			'item_name': item.item_name,
-			'indent': indent,
+			# 'indent': indent,
 			'bom': item.bom_no,
 			'qty': item.qty * qty_to_produce,
 			'uom': item.uom,
