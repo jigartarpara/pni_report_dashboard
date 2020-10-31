@@ -4,12 +4,17 @@
 from __future__ import unicode_literals
 import frappe
 from pprint import pprint
+import pandas as pd
 
 def execute(filters=None):
 	data = []
 	columns = get_columns()
 	get_data(filters, data)
-	return columns, data
+	print(data)
+	df = pd.DataFrame(data)
+	df.groupby(['item_code']).sum().reset_index()
+	print(df.values.tolist())
+	return columns, df.values.tolist()
 
 def get_data(filters, data):
 	get_exploded_items(filters.bom,filters.qty_to_produce, data)
