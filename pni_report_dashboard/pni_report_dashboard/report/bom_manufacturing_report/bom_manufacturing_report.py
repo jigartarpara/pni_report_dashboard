@@ -13,8 +13,8 @@ def execute(filters=None):
 	print(data)
 	df = pd.DataFrame(data)
 	df.groupby(['item_code']).sum().reset_index()
-	print(df.values.tolist())
-	return columns, df.values.tolist()
+	print(list(df.T.to_dict().values()))
+	return columns, list(df.T.to_dict().values())
 
 def get_data(filters, data):
 	get_exploded_items(filters.bom,filters.qty_to_produce, data)
