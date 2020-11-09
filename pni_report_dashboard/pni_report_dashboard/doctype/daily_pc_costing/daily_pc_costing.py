@@ -19,6 +19,10 @@ class DailyPCCosting(Document):
 	def calculate_data(self):
 		for raw in self.dail_pc_costing:
 			self.get_total_production(raw)
+
+			
+			# self.calculate_blank_scrap(raw)
+			# self.calculate_bottom_scrap(raw)
 	
 	def get_total_production(self, raw):
 		brand = raw.brand
@@ -41,6 +45,7 @@ class DailyPCCosting(Document):
 			raw.total_cup_production = data[0][0]
 			raw.net_weight = data[0][1]
 		
+
 		self.calculate_blank_scrap(raw)
 		self.calculate_bottom_scrap(raw)
 		
@@ -71,21 +76,85 @@ class DailyPCCosting(Document):
 			raw.f3 = 0
 	
 	def calculate_blank_scrap(self, raw):
-		data = frappe.db.sql(""" 
-			select sum(sed.qty)
+		blank_scrap_query = frappe.db.sql(""" 
+			select se.name, sed.item_code, sed.qty, se.pni_reference, pni_packing.total_stock, pni_packing.item
 				from 
 					`tabStock Entry Detail` as sed,
 					`tabStock Entry` as se,
-					`tabItem` as item
+					`tabItem` as item,
+					`tabPNI Packing` as pni_packing
 				where se.name = sed.parent
 					and se.posting_date = '{date}'
 					and sed.item_code = item.name
 					and se.scrap_entry = 1
 					and se.pni_reference_type = "Workstation"
-					and sed.item_code = "
-				group by se.pni_reference
+					and se.pni_reference = pni_packing.workstation
+					and sed.item_code = 'Blank Paper Scrap'
+				group by se.name
 		""".format(date=self.date_for_costing))
-		pass
+
+		self.items_stock_query = frappe.db.sql("""
+			select pni_packing.total_stock, pni_packing.item, pni_packing.workstation
+				from 
+					`tabStock Entry Detail` as sed,
+					`tabStock Entry` as se,
+					`tabItem` as item,
+					`tabPNI Packing` as pni_packing
+				where pni_packing.docstatus = 1 and se.name = sed.parent
+					and se.posting_date = '{date}'
+					and sed.item_code = item.name
+					and se.pni_reference_type = "Workstation"
+                    and se.pni_reference = pni_packing.workstation
+				group by 
+					pni_packing.name
+		""".format(date=self.date_for_costing))
+
+		print("in blank scrap")
+		#For Total blank scrap
+		total_blank_scrap = 0
+		total_cup_stock = 0
+		total_blank_scrap = sum([entry[2] for entry in blank_scrap_query])
+		print(total_blank_scrap)
+
+		#For items stock query
+		total_cup_stock = sum([int(entry[0]) for entry in self.items_stock_query])
+		print(total_cup_stock)
+
+		for entry in self.items_stock_query:
+			scrap_ratio = (int(entry[0])/total_cup_stock) * total_blank_scrap
+			print(scrap_ratio)
+
+		# for scrap in blank_scrap_ratio:
+		# 	raw.blank_scrap = sum(scrap)
 	
 	def calculate_bottom_scrap(self, raw):
-		pass
+		bottom_scrap_query = frappe.db.sql(""" 
+			select se.name, sed.item_code, sed.qty, se.pni_reference, pni_packing.total_stock, pni_packing.item
+				from 
+					`tabStock Entry Detail` as sed,
+					`tabStock Entry` as se,
+					`tabItem` as item,
+					`tabPNI Packing` as pni_packing
+				where se.name = sed.parent
+					and se.posting_date = '{date}'
+					and sed.item_code = item.name
+					and se.scrap_entry = 1
+					and se.pni_reference_type = "Workstation"
+					and se.pni_reference = pni_packing.workstation
+					and sed.item_code = 'Bottom Paper Scrap'
+				group by se.name
+		""".format(date=self.date_for_costing))
+
+		#For Total bottom scrap
+		total_bottom_scrap = 0
+		total_cup_stock = 0
+		total_bottom_scrap = sum([entry[2] for entry in bottom_scrap_query])
+		print(total_bottom_scrap)
+
+		#For items stock query
+		total_cup_stock = sum([int(entry[0]) for entry in self.items_stock_query])
+		print(total_cup_stock)
+
+		for entry in self.items_stock_query:
+			scrap_ratio = (int(entry[0])/total_cup_stock) * total_bottom_scrap
+			print(scrap_ratio)
