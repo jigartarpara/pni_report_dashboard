@@ -39,5 +39,10 @@ frappe.query_reports["BOM Search Report"] = {
 			label: __("Search Sub Assemblies"),
 			fieldtype: "Check",
 		},
+		{
+			fieldname: "default_bom_only",
+			label: __("Default BOM Only"),
+			fieldtype: "Check",
+		},
 	]
 };

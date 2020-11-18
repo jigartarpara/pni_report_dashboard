@@ -13,7 +13,7 @@ def execute(filters=None):
 		"BOM Explosion Item": "BOM",
 		"BOM Item": "BOM"
 	}
-
+	bom_default = {}
 	for doctype in ("Product Bundle Item",
 		"BOM Explosion Item" if filters.search_sub_assemblies else "BOM Item"):
 		for d in frappe.get_all(doctype, fields=["parent", "item_code", "name"]):
@@ -22,7 +22,12 @@ def execute(filters=None):
 				if key != "search_sub_assemblies":
 					if item and item != d.item_code:
 						valid = False
-
+			if filters.default_bom_only and parents[doctype] == "BOM":
+				if d.parent not in bom_default:
+					bom_default[d.parent] = frappe.db.get_value("BOM",d.parent,"is_default")
+				if not bom_default[d.parent]:
+					valid = False
+					
 			if valid:
 				data.append((d.parent, parents[doctype], d.name))
 
