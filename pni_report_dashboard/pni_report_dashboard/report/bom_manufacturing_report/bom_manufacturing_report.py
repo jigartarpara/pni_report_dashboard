@@ -11,10 +11,12 @@ def execute(filters=None):
 	columns = get_columns()
 	get_data(filters, data)
 	print(data)
-	df = pd.DataFrame(data)
-	df.groupby(['item_code']).sum().reset_index()
-	print(list(df.T.to_dict().values()))
-	return columns, list(df.T.to_dict().values())
+	if data:
+		df = pd.DataFrame(data)
+		df.groupby(['item_code']).sum().reset_index()
+		print(list(df.T.to_dict().values()))
+		return columns, list(df.T.to_dict().values())
+	return columns, data
 
 def get_data(filters, data):
 	get_exploded_items(filters.bom,filters.qty_to_produce, data)
