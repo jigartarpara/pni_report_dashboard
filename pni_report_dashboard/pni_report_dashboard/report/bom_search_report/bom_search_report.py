@@ -19,7 +19,7 @@ def execute(filters=None):
 		for d in frappe.get_all(doctype, fields=["parent", "item_code", "name"]):
 			valid = True
 			for key, item in iteritems(filters):
-				if key != "search_sub_assemblies":
+				if key != "search_sub_assemblies" and key != "default_bom_only":
 					if item and item != d.item_code:
 						valid = False
 			if filters.default_bom_only and parents[doctype] == "BOM":
@@ -27,10 +27,9 @@ def execute(filters=None):
 					bom_default[d.parent] = frappe.db.get_value("BOM",d.parent,"is_default")
 				if not bom_default[d.parent]:
 					valid = False
-					
 			if valid:
 				data.append((d.parent, parents[doctype], d.name))
-
+	print(bom_default)
 	return [{
 		"fieldname": "parent",
 		"label": "BOM",
