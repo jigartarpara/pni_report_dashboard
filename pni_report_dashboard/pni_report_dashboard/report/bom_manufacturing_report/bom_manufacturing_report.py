@@ -14,7 +14,7 @@ def execute(filters=None):
 	balance = {}
 	for raw in data:
 		if not balance.get(raw['item_code']):
-			balance[raw['item_code']] = get_stock_balance(filters)
+			balance[raw['item_code']] = get_stock_balance(raw['item_code'], filters)
 		raw['avl_qty'] = balance[raw['item_code']]
 	if data:
 		df = pd.DataFrame(data)
@@ -23,8 +23,9 @@ def execute(filters=None):
 		return columns, list(df.T.to_dict().values())
 	return columns, data
 
-def get_stock_balance(filters):
+def get_stock_balance(item, filters):
 	flt_data = {}
+	flt_data['item_code'] = item
 	if filters.warehouse:
 		flt_data['warehouse'] = filters.warehouse
 	balance = frappe.get_all('Bin', filters = flt_data, fields=['actual_qty'])
