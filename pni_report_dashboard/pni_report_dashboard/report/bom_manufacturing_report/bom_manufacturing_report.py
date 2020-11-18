@@ -13,11 +13,9 @@ def execute(filters=None):
 	get_data(filters, data)
 	balance = {}
 	for raw in data:
-		if not balance.get(raw.item_code):
-			balance[raw.item_code] = get_stock_balance(filters)
-			print(balance[raw.item_code])
+		if not balance.get(raw['item_code']):
+			balance[raw['item_code']] = get_stock_balance(filters)
 		raw['avl_qty'] = balance[raw.item_code]
-	print(data)
 	if data:
 		df = pd.DataFrame(data)
 		df.groupby(['item_code']).sum().reset_index()
