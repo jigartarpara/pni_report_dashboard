@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import frappe
 from pprint import pprint
 import pandas as pd
+from erpnext.accounts.utils import get_stock_and_account_balance
 
 def execute(filters=None):
 	data = []
@@ -16,8 +17,22 @@ def execute(filters=None):
 		df.groupby(['item_code']).sum().reset_index()
 		print(list(df.T.to_dict().values()))
 		return columns, list(df.T.to_dict().values())
+	balance = {}
+	for raw in data:
+		if not balance.get(raw.item_code):
+			balance[raw.item_code] = get_stock_balance(filters)
+		raw['avl_qty'] = balance[raw.item_code]
 	return columns, data
 
+def get_stock_balance(filters):
+	flt_data = {}
+	if filters.warehouse:
+		flt_data['warehouse'] = filters.warehouse
+	balance = frappe.get_all('Bin', filters = flt_data, fields=['actual_qty'])
+	qty = 0
+	for data in balance:
+		qty += float(data.actual_qty)
+	return qty
 def get_data(filters, data):
 	get_exploded_items(filters.bom,filters.qty_to_produce, data)
 
@@ -73,6 +88,12 @@ def get_columns():
 			"label": "UOM",
 			"fieldtype": "data",
 			"fieldname": "uom",
+			"width": 100
+		},
+		{
+			"label": "Available Qty",
+			"fieldtype": "data",
+			"fieldname": "avl_qty",
 			"width": 100
 		},
 		{
