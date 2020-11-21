@@ -46,19 +46,12 @@ class DailyPCCosting(Document):
 		print(bottom_scrap_query)
 
 		data = frappe.db.sql(""" 
-			select sum(sed.qty),se.name, sed.item_code
-				from 
-					`tabStock Entry Detail` as sed,
-					`tabStock Entry` as se,
-					`tabItem` as item,
+			select sum(pni_packing.total_stock), pni_packing.name
+				from
 					`tabPNI Packing` as pni_packing
 				where 
-					se.docstatus = 1
-					and se.name = sed.parent
-					and se.posting_date = '{date}'
-					and sed.item_code = item.name
-					and pni_packing.name = se.pni_reference
-					and se.pni_reference_type = 'PNI Packing'
+					pni_packing.docstatus = 1
+					and pni_packing.date = '{date}'
 		""".format(date=self.date_for_costing))
 		print(data)
 
@@ -77,8 +70,8 @@ class DailyPCCosting(Document):
 
 		for raw in self.dail_pc_costing:
 			self.get_total_production(raw)
-			raw.blank_scrap = total_cup_production * blank_scrap_ratio
-			raw.bottom_scrap = total_cup_production * bottom_scrap_ratio
+			raw.blank_scrap = raw.total_cup_production * blank_scrap_ratio
+			raw.bottom_scrap = raw.total_cup_production * bottom_scrap_ratio
 			print(raw.blank_scrap)
 			print(raw.bottom_scrap)
 
