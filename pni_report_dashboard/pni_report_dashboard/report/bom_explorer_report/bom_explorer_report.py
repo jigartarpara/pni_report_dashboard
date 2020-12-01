@@ -1,46 +1,38 @@
-# Copyright (c) 2013, Jigar Tarpara and contributors
+# Copyright (c) 2013, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
 import frappe
 from pprint import pprint
-import pandas as pd
 
 def execute(filters=None):
 	data = []
 	columns = get_columns()
 	get_data(filters, data)
-	print(data)
-	df = pd.DataFrame(data)
-	df.groupby(['item_code']).sum().reset_index()
-	print(list(df.T.to_dict().values()))
-	return columns, list(df.T.to_dict().values())
+	return columns, data
 
 def get_data(filters, data):
-	get_exploded_items(filters.bom,filters.qty_to_produce, data)
+	get_exploded_items(filters.bom, data)
 
-
-def get_exploded_items(bom, qty_to_produce, data, indent=0):
+def get_exploded_items(bom, data, indent=0):
 	exploded_items = frappe.get_all("BOM Item",
-		filters={"parent": bom, "bom_no": ('!=', '')},
+		filters={"parent": bom},
 		fields= ['qty','bom_no','qty','scrap','item_code','item_name','description','uom'])
-	
-	if exploded_items:
-		for item in exploded_items:
-			item["indent"] = indent
-			print(item)
-			data.append({
-				'item_code': item.item_code,
-				'item_name': item.item_name,
-				# 'indent': indent,
-				'bom': item.bom_no,
-				'qty': item.qty * qty_to_produce,
-				'uom': item.uom,
-				'description': item.description,
-				'scrap': item.scrap
-				})
-			if item.bom_no:
-				get_exploded_items(item.bom_no, item.qty * qty_to_produce, data, indent=indent+1)
+
+	for item in exploded_items:
+		item["indent"] = indent
+		data.append({
+			'item_code': item.item_code,
+			'item_name': item.item_name,
+			'indent': indent,
+			'bom': item.bom_no,
+			'qty': item.qty,
+			'uom': item.uom,
+			'description': item.description,
+			'scrap': item.scrap
+			})
+		if item.bom_no:
+			get_exploded_items(item.bom_no, data, indent=indent+1)
 
 def get_columns():
 	return [
@@ -89,4 +81,3 @@ def get_columns():
 			"width": 100
 		},
 	]
-
