@@ -9,6 +9,7 @@ from six import iteritems
 from erpnext.accounts.utils import get_fiscal_year
 
 def execute(filters=None):
+	Analytics(filters).get_current_sales_person()
 	return Analytics(filters).run()
 
 class Analytics(object):
