@@ -36,25 +36,28 @@ def get_stock_balance(item, filters):
 def get_data(filters, data):
 	get_exploded_items(filters.bom,filters.qty_to_produce, data)
 
+
 def get_exploded_items(bom, qty_to_produce, data, indent=0):
 	exploded_items = frappe.get_all("BOM Item",
 		filters={"parent": bom, "bom_no": ('!=', '')},
 		fields= ['qty','bom_no','qty','scrap','item_code','item_name','description','uom'])
-
-	for item in exploded_items:
-		item["indent"] = indent
-		data.append({
-			'item_code': item.item_code,
-			'item_name': item.item_name,
-			# 'indent': indent,
-			'bom': item.bom_no,
-			'qty': item.qty * qty_to_produce,
-			'uom': item.uom,
-			'description': item.description,
-			'scrap': item.scrap
-			})
-		if item.bom_no:
-			get_exploded_items(item.bom_no, item.qty * qty_to_produce, data, indent=indent+1)
+	
+	if exploded_items:
+		for item in exploded_items:
+			item["indent"] = indent
+			print(item)
+			data.append({
+				'item_code': item.item_code,
+				'item_name': item.item_name,
+				# 'indent': indent,
+				'bom': item.bom_no,
+				'qty': item.qty * qty_to_produce,
+				'uom': item.uom,
+				'description': item.description,
+				'scrap': item.scrap
+				})
+			if item.bom_no:
+				get_exploded_items(item.bom_no, item.qty * qty_to_produce, data, indent=indent+1)
 
 def get_columns():
 	return [
