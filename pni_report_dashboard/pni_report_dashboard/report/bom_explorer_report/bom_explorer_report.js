@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 /* eslint-disable */
 
-frappe.query_reports["BOM Manufacturing Report"] = {
+frappe.query_reports["BOM Explorer Report"] = {
 	"filters": [
 		{
 			fieldname: "bom",
@@ -16,18 +16,5 @@ frappe.query_reports["BOM Manufacturing Report"] = {
 				}
 			} 
 		},
-		{
-			fieldname: "qty_to_produce",
-			label: __("Quantity to Produce"),
-			fieldtype: "Int",
-			default: "1",
-			reqd: 1
-		},
-		{
-			fieldname: "warehouse",
-			label: __("Warehouse"),
-			fieldtype: "Link",
-			options: "Warehouse"
-		}
 	]
 };
