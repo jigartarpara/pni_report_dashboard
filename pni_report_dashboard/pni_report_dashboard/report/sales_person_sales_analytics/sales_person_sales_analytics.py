@@ -138,7 +138,8 @@ class Analytics(object):
 			filters={
 				"docstatus": 1,
 				"company": self.filters.company,
-				self.date_field: ('between', [self.filters.from_date, self.filters.to_date])
+				self.date_field: ('between', [self.filters.from_date, self.filters.to_date]),
+				"sales_person_name": self.get_current_sales_person()
 			}
 		)
 
@@ -185,7 +186,8 @@ class Analytics(object):
 			filters={
 				"docstatus": 1,
 				"company": self.filters.company,
-				self.date_field: ('between', [self.filters.from_date, self.filters.to_date])
+				self.date_field: ('between', [self.filters.from_date, self.filters.to_date]),
+				"sales_person_name": self.get_current_sales_person()
 			}
 		)
 		self.get_groups()
