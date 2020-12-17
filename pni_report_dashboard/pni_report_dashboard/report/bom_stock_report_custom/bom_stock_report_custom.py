@@ -39,7 +39,7 @@ def get_data(filters, data):
 
 def get_exploded_items(bom, qty_to_produce, data, indent=0):
 	exploded_items = frappe.get_all("BOM Item",
-		filters={"parent": bom, "bom_no": ('=', '')},
+		filters={"parent": bom},
 		fields= ['qty','bom_no','qty','scrap','item_code','item_name','description','uom'])
 	
 	if exploded_items:
@@ -56,7 +56,8 @@ def get_exploded_items(bom, qty_to_produce, data, indent=0):
 				'description': item.description,
 				'scrap': item.scrap
 				})
-			if item.bom_no:
+			is_purchase_item = frappe.get_value("Item",item.item_code,"is_purchase_item")
+			if item.bom_no and not is_purchase_item:
 				get_exploded_items(item.bom_no, item.qty * qty_to_produce, data, indent=indent+1)
 
 def get_columns():
