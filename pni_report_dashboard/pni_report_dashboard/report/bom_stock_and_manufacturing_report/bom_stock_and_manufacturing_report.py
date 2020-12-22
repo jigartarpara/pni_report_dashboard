@@ -21,7 +21,7 @@ def execute(filters=None):
 				balance[raw['item_code']] = get_stock_balance(raw['item_code'], filters)
 			raw['avl_qty'] = balance[raw['item_code']]
 			raw['req_qty'] = record[3]
-			raw['parts'] = record[4]
+			raw['parts'] = record[5]
 
 	if data:
 		df = pd.DataFrame(data)
