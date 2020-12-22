@@ -16,9 +16,12 @@ def execute(filters=None):
 
 	balance = {}
 	for raw in data:
-		if not balance.get(raw['item_code']):
-			balance[raw['item_code']] = get_stock_balance(raw['item_code'], filters)
-		raw['avl_qty'] = balance[raw['item_code']]
+		for record in get_bom_stock(filters):
+			if not balance.get(raw['item_code']):
+				balance[raw['item_code']] = get_stock_balance(raw['item_code'], filters)
+			raw['avl_qty'] = balance[raw['item_code']]
+			raw['req_qty'] = record[3]
+			raw['parts'] = record[5]
 
 	if data:
 		df = pd.DataFrame(data)
