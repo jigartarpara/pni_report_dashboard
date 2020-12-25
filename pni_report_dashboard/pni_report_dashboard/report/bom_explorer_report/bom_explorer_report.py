@@ -6,7 +6,7 @@ import frappe
 from pprint import pprint
 import sys
 
-sys.setrecursionlimit(15000)
+sys.setrecursionlimit(1500000)
 
 def execute(filters=None):
 	data = []
