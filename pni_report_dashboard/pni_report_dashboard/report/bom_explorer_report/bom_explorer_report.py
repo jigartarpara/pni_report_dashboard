@@ -4,6 +4,9 @@
 from __future__ import unicode_literals
 import frappe
 from pprint import pprint
+import sys
+
+sys.setrecursionlimit(15000)
 
 def execute(filters=None):
 	data = []
