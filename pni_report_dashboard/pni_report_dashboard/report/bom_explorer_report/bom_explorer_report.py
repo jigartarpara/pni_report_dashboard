@@ -15,7 +15,12 @@ def execute(filters=None):
 	return columns, data
 
 def get_data(filters, data):
-	get_exploded_items(filters.bom, data)
+	try:
+		get_exploded_items(filters.bom, data)
+	except:
+		title = "Error while processing BOM Explorer Report"
+		traceback = frappe.get_traceback()
+		frappe.log_error(message=traceback , title=title)
 
 def get_exploded_items(bom, data, indent=0):
 	exploded_items = frappe.get_all("BOM Item",
