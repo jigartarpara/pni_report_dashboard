@@ -20,6 +20,7 @@ def get_data(filters, data):
 		get_exploded_items(filters.bom, data)
 		frappe.log_error(message="BOM Explorer Report Complete" , title="BOM Explore Report Log 2")
 	except:
+		frappe.log_error(message="BOM Explorer Report Complete 4" , title="BOM Explore Report Log 4")
 		title = "Error while processing BOM Explorer Report"
 		traceback = frappe.get_traceback()
 		frappe.log_error(message=traceback , title=title)
