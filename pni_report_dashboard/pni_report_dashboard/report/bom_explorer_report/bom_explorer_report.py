@@ -26,9 +26,10 @@ def get_data(filters, data):
 		frappe.log_error(message=traceback , title=title)
 	frappe.log_error(message="BOM Explorer Report Complete 2" , title="BOM Explore Report Log 3")
 def get_exploded_items(bom, data, indent=0):
-	exploded_items = frappe.get_all("BOM Item",
-		filters={"parent": bom},
-		fields= ['qty','bom_no','qty','scrap','item_code','item_name','description','uom'])
+	exploded_items = frappe.db.sql("select qty,bom_no,qty,scrap,item_code,item_name,description,uom from `tabBOM Item` where parent = %s",bom,as_dict=1)
+	# exploded_items = frappe.get_all("BOM Item",
+	# 	filters={"parent": bom},
+	# 	fields= ['qty','bom_no','qty','scrap','item_code','item_name','description','uom'])
 	if exploded_items:
 		for item in exploded_items:
 			item["indent"] = indent
@@ -43,7 +44,7 @@ def get_exploded_items(bom, data, indent=0):
 				'scrap': item.scrap
 				})
 			if item.bom_no:
-				frappe.db.commit()
+				# frappe.db.commit()
 				get_exploded_items(item.bom_no, data, indent=indent+1)
 
 def get_columns():
