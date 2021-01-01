@@ -16,12 +16,14 @@ def execute(filters=None):
 
 def get_data(filters, data):
 	try:
+		frappe.log_error(message="BOM Explorer Report Started" , title="BOM Explore Report Log 1")
 		get_exploded_items(filters.bom, data)
+		frappe.log_error(message="BOM Explorer Report Complete" , title="BOM Explore Report Log 2")
 	except:
 		title = "Error while processing BOM Explorer Report"
 		traceback = frappe.get_traceback()
 		frappe.log_error(message=traceback , title=title)
-
+	frappe.log_error(message="BOM Explorer Report Complete 2" , title="BOM Explore Report Log 3")
 def get_exploded_items(bom, data, indent=0):
 	exploded_items = frappe.get_all("BOM Item",
 		filters={"parent": bom},
