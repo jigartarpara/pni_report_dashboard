@@ -43,6 +43,7 @@ def get_exploded_items(bom, data, indent=0):
 				'scrap': item.scrap
 				})
 			if item.bom_no:
+				frappe.db.commit()
 				get_exploded_items(item.bom_no, data, indent=indent+1)
 
 def get_columns():
