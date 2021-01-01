@@ -6,7 +6,7 @@ import frappe
 from pprint import pprint
 import sys
 
-sys.setrecursionlimit(1500000)
+sys.setrecursionlimit(15000)
 
 def execute(filters=None):
 	data = []
@@ -29,21 +29,21 @@ def get_exploded_items(bom, data, indent=0):
 	exploded_items = frappe.get_all("BOM Item",
 		filters={"parent": bom},
 		fields= ['qty','bom_no','qty','scrap','item_code','item_name','description','uom'])
-
-	for item in exploded_items:
-		item["indent"] = indent
-		data.append({
-			'item_code': item.item_code,
-			'item_name': item.item_name,
-			'indent': indent,
-			'bom': item.bom_no,
-			'qty': item.qty,
-			'uom': item.uom,
-			'description': item.description,
-			'scrap': item.scrap
-			})
-		if item.bom_no:
-			get_exploded_items(item.bom_no, data, indent=indent+1)
+	if exploded_items:
+		for item in exploded_items:
+			item["indent"] = indent
+			data.append({
+				'item_code': item.item_code,
+				'item_name': item.item_name,
+				'indent': indent,
+				'bom': item.bom_no,
+				'qty': item.qty,
+				'uom': item.uom,
+				'description': item.description,
+				'scrap': item.scrap
+				})
+			if item.bom_no:
+				get_exploded_items(item.bom_no, data, indent=indent+1)
 
 def get_columns():
 	return [
